@@ -58,6 +58,9 @@
                     <a class="nav-link registro" href="{% url 'registro' %}">Registro</a>
                 </li>
                 {% endif %}
+                <li class="nav-item">
+                  <a class="nav-link registro" href="#" id="toggle-lectura" onclick="toggleLectura(); return false;">AUDIO: Deshabilitado</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -70,7 +73,7 @@
         <div class="row">
             {% for producto in productos %}
             <div class="col-md-6 col-12">
-                <div class="store storeSpacing">
+                <div class="store storeSpacing" id="card" onclick="leerTextoCard(this)">
                     <img src="{{ producto.imagen.url }}" alt="{{ producto.nombreProducto }}" class="img-fluid">
                     <p class="storetxt">{{ producto.nombreProducto }}</p>
                     <p class="storetxt">{{ producto.descripcionProducto }}</p>
@@ -137,5 +140,32 @@
     
     {% endif %}
 </body>
+    <script>
+        let lecturaHabilitada = false;  
+            function toggleLectura() {
+                lecturaHabilitada = !lecturaHabilitada; 
+                const toggleButton = document.getElementById('toggle-lectura');
+                if (lecturaHabilitada) {
+                    toggleButton.textContent = "AUDIO: Habilitado";
+                } else {
+                    toggleButton.textContent = "AUDIO: Deshabilitado";
+                }
+            }
 
+        
+            function leerTextoCard(card) {
+                if (!lecturaHabilitada) {
+                    console.log("Lectura de audio deshabilitada.");
+                    return;  
+                }
+                const texto = card.innerText;
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(texto);
+                    utterance.lang = 'es-ES'; 
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    alert("API de síntesis de voz no soportada en este navegador.");
+                }
+            }    
+    </script>
 </html>

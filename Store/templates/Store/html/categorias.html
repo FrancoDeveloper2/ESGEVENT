@@ -58,6 +58,9 @@
                     <a class="nav-link registro" href="{% url 'registro' %}">Registro</a>
                 </li>
                 {% endif %}
+                <li class="nav-item">
+                  <a class="nav-link registro" href="#" id="toggle-lectura" onclick="toggleLectura(); return false;">AUDIO: Deshabilitado</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -71,8 +74,8 @@
     <div class="row">
         {% for categoria in categorias %}
         <div class="col-md-4 col-12">
-            <div class="card mb-4">
-                <img src="{{ categoria.imagenCat.url }}" class="card-img-top" alt="{{ categoria.nombreCat }}">
+            <div class="card mb-4" onclick="leerTextoCard(this)" >
+                <img src="{{ categoria.imagenCat.url }}" class="card-img-top" alt="{{ categoria.nombreCat }}"  >
                 <div class="card-body">
                     <h5 class="card-title">{{ categoria.nombreCat }}</h5>
                     <a href="{% url 'categoria' categoria.idCategoria %}" class="btn btn-primary">Ver productos</a>
@@ -118,4 +121,33 @@
 
 {% endif %}
 </body>
+
+    <script>
+        let lecturaHabilitada = false;  
+            function toggleLectura() {
+                lecturaHabilitada = !lecturaHabilitada; 
+                const toggleButton = document.getElementById('toggle-lectura');
+                if (lecturaHabilitada) {
+                    toggleButton.textContent = "AUDIO: Habilitado";
+                } else {
+                    toggleButton.textContent = "AUDIO: Deshabilitado";
+                }
+            }
+
+        
+            function leerTextoCard(card) {
+                if (!lecturaHabilitada) {
+                    console.log("Lectura de audio deshabilitada.");
+                    return;  
+                }
+                const texto = card.innerText;
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(texto);
+                    utterance.lang = 'es-ES'; 
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    alert("API de síntesis de voz no soportada en este navegador.");
+                }
+            }    
+    </script>
 </html>
