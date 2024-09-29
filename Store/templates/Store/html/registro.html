@@ -4,12 +4,19 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>Store | REGISTRO</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'Store/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'Store/css/style_usuario.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{% static 'Store/css/style.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
+
+
 <body>
     <body
     {% if background %}
@@ -20,67 +27,102 @@
   >
 
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light custom-navbar-bg">
+  <body {% if background %}
+  style="background-image: url('{{ background.background_image.url }}'); background-size: cover;" {% else %}
+  style="background-color: #ffffff;" {% endif %}>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light custom-navbar-bg">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'index' %}">
-            {% if site_settings and site_settings.logo %}
-            <img src="{{ site_settings.logo.url }}" alt="Logo" class="logo navbar-logo">
-            {% else %}
-                <h3 class="logo">Store</h3>
-            {% endif %}
-        </a>
-        <form method="GET" action="{% url 'buscar_producto' %}">
-            <input type="text" name="query" placeholder="Buscar productos...">
-            <button type="submit">Buscar</button>
-        </form>
-        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+      <a class="navbar-brand" href="{% url 'index' %}">
+        {% if site_settings and site_settings.logo %}
+        <img src="{{ site_settings.logo.url }}" alt="Logo" class="logo navbar-logo">
+        {% else %}
+        <h3 class="logo">Store</h3>
+        {% endif %}
+      </a>
 
-        <!-- Contenido del menú -->
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav ms-auto">
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <p class="pt-2 nombre-usuario h6">Bienvenido, {{ user.username }}</p>
-                </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link registro" href="{% url 'categorias' %}">Categorias</a>
-                </li>
-                {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link registro" href="{% url 'editarperfil' %}">Editar Perfil</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link registro" href="{% url 'cambio_contra' %}">Cambio de Contraseña</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link registro" href="{% url 'cierresesion' %}" id="logout-link">Cerrar sesión</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link registro" href="{% url 'carrito' %}">Carro de compra</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link registro" href="{% url 'login' %}">Inicio de Sesión</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link registro" href="{% url 'registro' %}">Registro</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
+      <a class="txtnav" href="{% url 'index' %}">Home</a>
+      <a class="txtnav" href="{% url 'categorias' %}">Categorias</a>
+
+
+      <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Contenido del menú -->
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto d-flex align-items-center">
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <p class="pt-2 nombre-usuario h6" style="margin-right: 20px;">Bienvenido, {{ user.username }}</p>
+      
+          </li>
+          {% else %}
+          <!-- Ícono de Usuario -->
+          <li class="nav-item">
+            <a class="nav-link registro d-flex align-items-center" href="{% url 'login' %}">
+              <i class="fas fa-user" style="color: orange;"></i>
+              Iniciar sesión
+            </a>
+          </li>
+
+          {% endif %}
+          <!-- Botón de búsqueda con ventana emergente -->
+          <li class="nav-item d-flex align-items-center">
+            <button class="btn p-0" id="search-btn" style="background: none; border: none;">
+              <i class="fas fa-search" style="color: orange;"></i>
+              <span class="buscar-text">Buscar</span>
+            </button>
+          </li>
+
+          <!-- Ícono de Carrito -->
+          <li class="nav-item">
+            <a class="nav-link registro d-flex align-items-center" href="{% url 'carrito' %}">
+              <i class="fas fa-shopping-cart" style="color: orange;"></i>
+              Carrito
+            </a>
+          </li>
+
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link registro" href="{% url 'editarperfil' %}">
+              <i class="fas fa-user-edit" style="color: orange;"></i> Editar Perfil
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link registro" href="{% url 'cambio_contra' %}">
+              <i class="fas fa-lock" style="color: orange;"></i> Cambio de Contraseña
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link registro" href="{% url 'cierresesion' %}" id="logout-link">
+              <i class="fas fa-sign-out-alt" style="color: orange;"></i> Cerrar sesión
+            </a>
+          </li>
+          {% endif %}
+
+        </ul>
+      </div>
     </div>
-</nav>
+
+
+    
+    <!-- Ventana emergente de búsqueda -->
+    <div id="search-popup" class="search-popup" style="display: none;">
+      <form method="GET" action="{% url 'buscar_producto' %}">
+        <input type="text" name="query" placeholder="Buscar productos...">
+        <button type="submit">Buscar</button>
+      </form>
+    </div>
+    </div>
+  </nav>
 
 <div class="container">
     <div class="row">
         <div class="col-12">
             <div>
-                <h1 class="txtregistro">Registro</h1>
+                <h1 class="txttituloregistro">Registro</h1>
             </div>
             <form method="post" action="{% url 'registrar_usuario' %}" id="formulario1">
                 {% csrf_token %}
@@ -160,6 +202,25 @@
     </div>
 </div>
 
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h5>Sobre Nosotros</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'quienes_somos' %}" class="text-white">¿Quiénes Somos?</a></li>
+                    <li><a href="{% url 'contacto' %}" class="text-white">Contacto</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <p>&copy; {{ current_year }} Empresa. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
     <!-- Ventana emergente de búsqueda -->
     <div id="search-popup" class="search-popup" style="display: none;">
         <form method="GET" action="{% url 'buscar_producto' %}">
@@ -216,5 +277,7 @@
 </script>
 <script src="{% static 'Store/js/validaciones.js' %}"></script>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
 </body>
 </html>

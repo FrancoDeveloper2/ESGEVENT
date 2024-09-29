@@ -43,7 +43,7 @@
           {% if user.is_authenticated %}
           <li class="nav-item">
             <p class="pt-2 nombre-usuario h6" style="margin-right: 20px;">Bienvenido, {{ user.username }}</p>
-            <!-- Ajusta el margen aquí -->
+            
           </li>
           {% else %}
           <!-- Ícono de Usuario -->
@@ -130,57 +130,128 @@
       </button>
   </div>
 </div>
+ 
 
-
-
-<div class="container mt-5">
+<div class="container">
   <div class="row">
+
+            <!-- Productos Destacados -->
+            <h2 class="txttitulohome">Productos Destacados</h2>
+            <div class="row justify-content-center">
+                {% for producto in productos_destacados %}
+                <div class="col-md-6 col-lg-4 col-12 mb-4">
+                    <div class="card producto-card bg-dark text-white">
+                        <img src="{{ producto.imagen.url }}" alt="{{ producto.nombreProducto }}" class="card-img-top img-fluid" style="height: 250px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ producto.nombreProducto }}</h5>
+                            <p class="card-text">{{ producto.descripcionProducto }}</p>
+                            <p class="card-text">Precio: ${{ producto.precioProducto }}</p>
+                            <p class="card-text">Stock disponible: {{ producto.stockProd }}</p>
+                            <form method="post" action="{% url 'agregar_al_carrito' producto.idProducto %}">
+                                {% csrf_token %}
+                                <div class="input-group mb-3">
+                                    <button class="btn btn-outline-secondary" type="button" id="restarCantidad">-</button>
+                                    <input type="text" class="form-control text-center" name="cantidad" value="1" readonly>
+                                    <button class="btn btn-outline-secondary" type="button" id="sumarCantidad">+</button>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Agregar al carrito</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+
+
       <!-- Lo Más Vendido -->
-<!-- Productos Más Vendidos -->
-<div class="col-md-6">
-  <h2 class="txttitulo">Productos Más Vendidos</h2>
-  <div class="row">
-      {% for producto in productos_mas_vendidos %}
-      <div class="col-md-12 mb-4">
-          <div class="card mb-4 bg-dark text-white">
-              <img src="{{ producto.imagen_producto.url }}" class="card-img-top" alt="{{ producto.producto__nombreProducto }}">
-              <div class="card-body">
-                  <h5 class="card-title">{{ producto.producto__nombreProducto }}</h5>
-                  <p class="card-text">Precio: ${{ producto.precio_unitario }}</p>
-                  <a href="{% url 'producto' producto.producto__idProducto %}" class="btn btn-primary">Ver producto</a>
-              </div>
-          </div>
-      </div>
-      {% endfor %}
-  </div>
-</div>
-
-
-      <!-- Productos Más Nuevos -->
-      <div class="col-md-6">
-          <h2 class="txttitulo">Productos Más Nuevos</h2>
-          <div class="row">
-              {% for producto in productos_mas_nuevos %}
-              <div class="col-md-12 mb-4">
-                  <div class="card mb-4 bg-dark text-white">
-                      <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombreProducto }}">
-                      <div class="card-body">
-                          <h5 class="card-title">{{ producto.nombreProducto }}</h5>
-                          <p class="card-text">Precio: ${{ producto.precioProducto }}</p>
-                          <a href="{% url 'producto' producto.idProducto %}" class="btn btn-primary">Ver producto</a>
-                      </div>
+      <h2 class="txttitulohome">Productos Más Vendidos</h2>
+      <div class="row justify-content-center">
+          {% for producto in productos_mas_vendidos %}
+          <div class="col-md-6 col-lg-4 col-12 mb-4">
+              <div class="card producto-card bg-dark text-white">
+                  <img src="{{ producto.imagen.url }}" alt="{{ producto.nombreProducto }}" class="card-img-top img-fluid" style="height: 250px; object-fit: cover;">
+                  <div class="card-body">
+                      <h5 class="card-title">{{ producto.nombreProducto }}</h5>
+                      <p class="card-text">{{ producto.descripcionProducto }}</p>
+                      <p class="card-text">Precio: ${{ producto.precioProducto }}</p>
+                      <p class="card-text">Stock disponible: {{ producto.stockProd }}</p>
+                      
+                      <!-- Formulario para agregar al carrito -->
+                      <form method="post" action="{% url 'agregar_al_carrito' producto.idProducto %}">
+                          {% csrf_token %}
+                          <div class="input-group mb-3">
+                              <button class="btn btn-outline-secondary" type="button" id="restarCantidad">-</button>
+                              <input type="text" class="form-control text-center" name="cantidad" value="1" readonly>
+                              <button class="btn btn-outline-secondary" type="button" id="sumarCantidad">+</button>
+                          </div>
+                          <button type="submit" class="btn btn-primary w-100">Agregar al carrito</button>
+                      </form>
                   </div>
               </div>
-              {% endfor %}
           </div>
+          {% endfor %}
       </div>
+
+      <!-- Productos Más Nuevos -->
+      <h2 class="txttitulohome">Productos Más Nuevos</h2>
+      <div class="row justify-content-center">
+          {% for producto in productos_mas_nuevos %}
+          <div class="col-md-6 col-lg-4 col-12 mb-4">
+              <div class="card producto-card bg-dark text-white">
+                  <img src="{{ producto.imagen.url }}" alt="{{ producto.nombreProducto }}" class="card-img-top img-fluid" style="height: 250px; object-fit: cover;">
+                  <div class="card-body">
+                      <h5 class="card-title">{{ producto.nombreProducto }}</h5>
+                      <p class="card-text">{{ producto.descripcionProducto }}</p>
+                      <p class="card-text">Precio: ${{ producto.precioProducto }}</p>
+                      <p class="card-text">Stock disponible: {{ producto.stockProd }}</p>
+                      
+                      <!-- Formulario para agregar al carrito -->
+                      <form method="post" action="{% url 'agregar_al_carrito' producto.idProducto %}">
+                          {% csrf_token %}
+                          <div class="input-group mb-3">
+                              <button class="btn btn-outline-secondary" type="button" id="restarCantidad">-</button>
+                              <input type="text" class="form-control text-center" name="cantidad" value="1" readonly>
+                              <button class="btn btn-outline-secondary" type="button" id="sumarCantidad">+</button>
+                          </div>
+                          <button type="submit" class="btn btn-primary w-100">Agregar al carrito</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+
   </div>
 </div>
 
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4">
+  <div class="container">
+      <div class="row">
+          <div class="col">
+              <h5>Sobre Nosotros</h5>
+              <ul class="list-unstyled">
+                  <li><a href="{% url 'quienes_somos' %}" class="text-white">¿Quiénes Somos?</a></li>
+                  <li><a href="{% url 'contacto' %}" class="text-white">Contacto</a></li>
+              </ul>
+          </div>
+      </div>
+  </div>
+  <div class="text-center">
+      <p>&copy; {{ current_year }} Empresa. Todos los derechos reservados.</p>
+  </div>
+</footer>
 
 
 
 
+<script src="{% static 'Store/js/carrito.js' %}"></script>
+
+
+<form method="post" id="csrf-form">
+  {% csrf_token %}
+</form>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Cargo static de py -->
 {% load static %}
 
 <head>
@@ -17,6 +16,7 @@
 <body {% if background %}
   style="background-image: url('{{ background.background_image.url }}'); background-size: cover;" {% else %}
   style="background-color: #ffffff;" {% endif %}>
+  
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light custom-navbar-bg">
     <div class="container">
@@ -27,10 +27,8 @@
         <h3 class="logo">Store</h3>
         {% endif %}
       </a>
-
       <a class="txtnav" href="{% url 'index' %}">Home</a>
       <a class="txtnav" href="{% url 'categorias' %}">Categorias</a>
-
 
       <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
         aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,19 +41,15 @@
           {% if user.is_authenticated %}
           <li class="nav-item">
             <p class="pt-2 nombre-usuario h6" style="margin-right: 20px;">Bienvenido, {{ user.username }}</p>
-            
           </li>
           {% else %}
-          <!-- Ícono de Usuario -->
           <li class="nav-item">
             <a class="nav-link registro d-flex align-items-center" href="{% url 'login' %}">
               <i class="fas fa-user" style="color: orange;"></i>
               Iniciar sesión
             </a>
           </li>
-
           {% endif %}
-          <!-- Botón de búsqueda con ventana emergente -->
           <li class="nav-item d-flex align-items-center">
             <button class="btn p-0" id="search-btn" style="background: none; border: none;">
               <i class="fas fa-search" style="color: orange;"></i>
@@ -63,7 +57,6 @@
             </button>
           </li>
 
-          <!-- Ícono de Carrito -->
           <li class="nav-item">
             <a class="nav-link registro d-flex align-items-center" href="{% url 'carrito' %}">
               <i class="fas fa-shopping-cart" style="color: orange;"></i>
@@ -88,11 +81,10 @@
             </a>
           </li>
           {% endif %}
-
         </ul>
       </div>
     </div>
-
+    
     <!-- Ventana emergente de búsqueda -->
     <div id="search-popup" class="search-popup" style="display: none;">
       <form method="GET" action="{% url 'buscar_producto' %}">
@@ -100,38 +92,16 @@
         <button type="submit">Buscar</button>
       </form>
     </div>
-    </div>
   </nav>
 
-
-
-
-  <h2 class="txttitulo">Categorías</h2>
-
-  <div class="container">
-      <div class="row">
-          {% for categoria in categorias %}
-          <div class="col-md-4 col-12">
-              <div class="card mb-4 categoria-card bg-dark text-white">
-                  <img src="{{ categoria.imagenCat.url }}" class="card-img-top img-fluid" alt="{{ categoria.nombreCat }}" style="height: 250px; object-fit: cover;">
-                  <div class="card-body">
-                      <h5 class="card-title">{{ categoria.nombreCat }}</h5>
-                      <a href="{% url 'categoria' categoria.idCategoria %}" class="btn btn-primary">Ver productos</a>
-                  </div>
-              </div>
-          </div>
-          {% endfor %}
-      </div>
+  <div class="container mt-5">
+    <h2>Quiénes Somos</h2>
+    {% if contenido %}
+    <p class="texto-blanco">{{ contenido.contenido }}</p>
+    {% else %}
+    <p>No hay contenido disponible.</p>
+    {% endif %}
   </div>
-  
-
-<a href="{% url 'index' %}" class="boton_volver d-block text-center mt-4">Volver</a>
-<script src="{% static 'Store/js/carrito.js' %}"></script>
-
-<form method="post" id="csrf-form">
-    {% csrf_token %}
-</form>
-
 
   <!-- Footer -->
   <footer class="bg-dark text-white text-center py-4">
@@ -151,63 +121,36 @@
     </div>
   </footer>
 
+  <script src="{% static 'Store/js/carrito.js' %}"></script>
 
-  
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-  
-  
-  
-    <!-- JavaScript para mostrar y ocultar la ventana emergente -->
-    <script>
-      document.getElementById('search-btn').addEventListener('click', function () {
-        var popup = document.getElementById('search-popup');
-        if (popup.style.display === 'none') {
-          popup.style.display = 'block';
-        } else {
-          popup.style.display = 'none';
-        }
-      });
-  
-      // Cerrar la ventana emergente si se hace clic fuera de ella
-      window.addEventListener('click', function (e) {
-        var popup = document.getElementById('search-popup');
-        var searchBtn = document.getElementById('search-btn');
-  
-        if (!popup.contains(e.target) && e.target !== searchBtn && !searchBtn.contains(e.target)) {
-          popup.style.display = 'none';
-        }
-      });
-    </script>
+  <form method="post" id="csrf-form">
+    {% csrf_token %}
+  </form>
 
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-    crossorigin="anonymous"></script>
+  <!-- JavaScript para mostrar y ocultar la ventana emergente -->
+  <script>
+    document.getElementById('search-btn').addEventListener('click', function () {
+      var popup = document.getElementById('search-popup');
+      if (popup.style.display === 'none') {
+        popup.style.display = 'block';
+      } else {
+        popup.style.display = 'none';
+      }
+    });
 
-<!-- Modal para mostrar mensajes -->
-{% if messages %}
-<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="messageModalLabel">Mensaje</h5>
-            </div>
-            <div class="modal-body">
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</div>
+    // Cerrar la ventana emergente si se hace clic fuera de ella
+    window.addEventListener('click', function (e) {
+      var popup = document.getElementById('search-popup');
+      var searchBtn = document.getElementById('search-btn');
 
-<script>
-    var messageModal = new bootstrap.Modal(document.getElementById('messageModal'), {});
-    messageModal.show();
-</script>
-
-{% endif %}
+      if (!popup.contains(e.target) && e.target !== searchBtn && !searchBtn.contains(e.target)) {
+        popup.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>

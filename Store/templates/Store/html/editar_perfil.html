@@ -27,50 +27,38 @@
         <h3 class="logo">Store</h3>
         {% endif %}
       </a>
-
       <a class="txtnav" href="{% url 'index' %}">Home</a>
       <a class="txtnav" href="{% url 'categorias' %}">Categorias</a>
-
-
       <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
         aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
-      <!-- Contenido del menú -->
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav ms-auto d-flex align-items-center">
           {% if user.is_authenticated %}
           <li class="nav-item">
             <p class="pt-2 nombre-usuario h6" style="margin-right: 20px;">Bienvenido, {{ user.username }}</p>
-            <!-- Ajusta el margen aquí -->
           </li>
           {% else %}
-          <!-- Ícono de Usuario -->
           <li class="nav-item">
             <a class="nav-link registro d-flex align-items-center" href="{% url 'login' %}">
               <i class="fas fa-user" style="color: orange;"></i>
               Iniciar sesión
             </a>
           </li>
-
           {% endif %}
-          <!-- Botón de búsqueda con ventana emergente -->
           <li class="nav-item d-flex align-items-center">
             <button class="btn p-0" id="search-btn" style="background: none; border: none;">
               <i class="fas fa-search" style="color: orange;"></i>
               <span class="buscar-text">Buscar</span>
             </button>
           </li>
-
-          <!-- Ícono de Carrito -->
           <li class="nav-item">
             <a class="nav-link registro d-flex align-items-center" href="{% url 'carrito' %}">
               <i class="fas fa-shopping-cart" style="color: orange;"></i>
               Carrito
             </a>
           </li>
-
           {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link registro" href="{% url 'editarperfil' %}">
@@ -88,158 +76,134 @@
             </a>
           </li>
           {% endif %}
-
         </ul>
       </div>
     </div>
 
-    <!-- Ventana emergente de búsqueda -->
     <div id="search-popup" class="search-popup" style="display: none;">
       <form method="GET" action="{% url 'buscar_producto' %}">
         <input type="text" name="query" placeholder="Buscar productos...">
         <button type="submit">Buscar</button>
       </form>
     </div>
-    </div>
   </nav>
 
-  
-<div class="container">
+  <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <div class="my-5 txtperfil">
-                <h3>Editar Perfil</h3>
-                <hr>
-            </div>
-            <form method="post" action="{% url 'editarperfil' %}">
+      <div class="col-md-12">
+        <div class="my-5 txtperfil text-center">
+          <h3>Editar Perfil</h3>
+          <hr>
+        </div>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- Mostrar mensajes de éxito o error -->
+              {% if messages %}
+              <div class="alert-container mb-4">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+              </div>
+              {% endif %}
+              <form method="post" action="{% url 'editarperfil' %}">
                 {% if user.is_authenticated %}
                 {% csrf_token %}
-                <div class="row mb-5 gx-md-5 ">
-                    <div class="col-md-8 mb-5 mb-md-0">
-                        <div class="bg-secondary-soft px-4 py-5 rounded">
-                            <h4 class="mb-4 mt-0 txtperfil">Detalles de contacto</h4>
-
-                            
-                            <div class="mb-3">
-                                <label class="form-label label-nombre">Nombre</label> 
-                                <input type="text" class="form-control" name="nombre" aria-label="User" value="{{user.nombre}}">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label label-nombre">Apellidos</label>
-                                <input type="text" class="form-control"name="apellidos"  aria-label="User" value="{{user.apellidos}}">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label label-nombre">Nombre Usuario</label>
-                                <input type="text" class="form-control" name="usuario" aria-label="User" value="{{ user.username }}">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label label-nombre">Email</label>
-                                <input type="email" class="form-control" name="email"  id="inputEmail4" value="{{user.email}}">
-                            </div>
-
-
-                        </div>
+                <div class="row mb-5 gx-md-5">
+                  <div class="col-md-8 mb-5 mb-md-0">
+                    <div class="bg-secondary-soft px-4 py-5 rounded">
+                      <h4 class="mb-4 mt-0 txtperfil">Detalles de contacto</h4>
+                      <div class="mb-3">
+                        <label class="form-label label-nombre">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" aria-label="User" value="{{ user.nombre }}" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label label-nombre">Apellidos</label>
+                        <input type="text" class="form-control" name="apellidos" aria-label="User" value="{{ user.apellidos }}" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label label-nombre">Nombre Usuario</label>
+                        <input type="text" class="form-control" name="usuario" aria-label="User" value="{{ user.username }}" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label label-nombre">Email</label>
+                        <input type="email" class="form-control" name="email" id="inputEmail4" value="{{ user.email }}" required>
+                      </div>
                     </div>
+                  </div>
                 </div>
                 <div class="gap-3 d-md-flex justify-content-md-end text-center">
-                    <button type="submit" class="btn btn-primary btn-lg boton-enviar">Actualizar Datos</button>
+                  <button type="submit" class="btn btn-primary btn-lg boton-enviar">Actualizar Datos</button>
                 </div>
                 {% endif %}
-            </form>
-
-            <div class="container mt-5 ">
-                <div class="my-5 txtperfil">
-                    <h4>Detalles del Usuario</h4>
-                    <hr>
-                </div>
-                <table class="table table-striped black-background-table">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID Detalle</th>
-                            <th scope="col">Nombre Producto</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Subtotal</th>
-                            <th scope="col">Producto ID</th>
-                            <th scope="col">Venta ID</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for detalle in detalles %}
-                        <tr>
-                            <td>{{ detalle.idDetalle }}</td>
-                            <td>{{ detalle.producto.nombreProducto }}</td>
-                            <td>{{ detalle.cantidad }}</td>
-                            <td>{{ detalle.subTotal }}</td>
-                            <td>{{ detalle.producto_id }}</td>
-                            <td>{{ detalle.venta_id }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+              </form>
             </div>
+          </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="errorModalLabel">Error</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="error_message"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
+        <div class="container mt-5">
+          <div class="my-5 txtperfil text-center">
+            <h4>Detalles del Usuario</h4>
+            <hr>
+          </div>
+          <table class="table table-striped black-background-table text-center">
+            <thead>
+              <tr>
+                <th scope="col">Producto</th>
+                <th scope="col">Nombre Producto</th>
+                <th scope="col">ID Venta</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Subtotal</th>
+                <th scope="col">Fecha de Venta</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if ventas %}
+              {% for venta in ventas %}
+              <tr>
+                <td>
+                  {% if venta.imagen_producto %}
+                  <img src="{{ venta.imagen_producto.url }}" alt="Imagen de {{ venta.producto.nombreProducto }}" style="width: 50px; height: auto;">
+                  {% else %}
+                  Sin imagen
+                  {% endif %}
+                </td>
+                <td>{{ venta.producto.nombreProducto }}</td>
+                <td>{{ venta.idVenta }}</td>
+                <td>{{ venta.cantidad }}</td>
+                <td>{{ venta.total }}</td>
+                <td>{{ venta.fechaVenta }}</td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                <td colspan="6" class="text-center">No hay ventas registradas para este usuario.</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
         </div>
+      </div>
     </div>
+  </div>
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-4">
+    <div class="container">
+      <h5>Sobre Nosotros</h5>
+      <ul class="list-unstyled">
+        <li><a href="{% url 'quienes_somos' %}" class="text-white">¿Quiénes Somos?</a></li>
+        <li><a href="{% url 'contacto' %}" class="text-white">Contacto</a></li>
+      </ul>
+      <p>&copy; {{ current_year }} Empresa. Todos los derechos reservados.</p>
+    </div>
+  </footer>
 
-  
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-  
-  
-  
-    <!-- JavaScript para mostrar y ocultar la ventana emergente -->
-    <script>
-      document.getElementById('search-btn').addEventListener('click', function () {
-        var popup = document.getElementById('search-popup');
-        if (popup.style.display === 'none') {
-          popup.style.display = 'block';
-        } else {
-          popup.style.display = 'none';
-        }
-      });
-  
-      // Cerrar la ventana emergente si se hace clic fuera de ella
-      window.addEventListener('click', function (e) {
-        var popup = document.getElementById('search-popup');
-        var searchBtn = document.getElementById('search-btn');
-  
-        if (!popup.contains(e.target) && e.target !== searchBtn && !searchBtn.contains(e.target)) {
-          popup.style.display = 'none';
-        }
-      });
-    </script>
-
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        var error_message = "{{ error_message|escapejs }}";
-        if (error_message) {
-            $(document).ready(function () {
-                $('#error_message').text(error_message);
-                $('#errorModal').modal('show');
-            });
-        }
-    </script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz4fnFO9gyb8gD8z2FLbD1G0yJoDoFXp9ITq3X+Qm8czs2B6I2og2d8H2H"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-rcOTtBXpP+S6yKcbU6lhc9IrFnH0sO0Ut8OjbHPh4BLS0/TDoUjF+59B6gOTW1b8"
+    crossorigin="anonymous"></script>
 </body>
+
 </html>

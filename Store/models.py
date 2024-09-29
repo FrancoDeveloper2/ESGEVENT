@@ -85,6 +85,7 @@ class Producto(models.Model):
     stockProd = models.IntegerField(verbose_name="Stock del Producto", null=False, blank=False)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     imagen = models.ImageField(upload_to='productos', null=True, blank=True)
+    destacado = models.BooleanField(default=False, verbose_name="Destacado")  
 
     class Meta:
         db_table = 'STORE_PRODUCTO'
@@ -92,6 +93,15 @@ class Producto(models.Model):
     def __str__(self):
         return self.nombreProducto  
 
+
+class QuienesSomos(models.Model):
+    contenido = models.TextField(verbose_name="Contenido", null=False, blank=False)
+
+    class Meta:
+        db_table = 'quienes_somos'
+
+    def __str__(self):
+        return "Contenido de Quiénes Somos"
 
 
 
@@ -103,7 +113,7 @@ class Venta(models.Model):
     cantidad = models.PositiveIntegerField(default=1)
     precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
     total = models.DecimalField(max_digits=10, decimal_places=2)
-    imagen_producto = models.ImageField(upload_to='productos', null=True, blank=True)  # Asegúrate de que este campo se utiliza
+    imagen_producto = models.ImageField(upload_to='productos', null=True, blank=True)  
 
     def __str__(self):
         return f"{self.usuario} - {self.producto.nombreProducto} - {self.fechaVenta}"
@@ -113,7 +123,7 @@ class Venta(models.Model):
         return cls.objects.values(
             'producto__idProducto',
             'producto__nombreProducto',
-            'imagen_producto',  # Obtiene la imagen desde la tabla Venta
+            'imagen_producto',  
             'precio_unitario'
         ).annotate(total_vendidos=Count('idVenta')).order_by('-total_vendidos')[:limite]
 

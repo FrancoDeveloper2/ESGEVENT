@@ -78,6 +78,11 @@ body {
     max-width: auto;  
 }
 
+.btn-enviar {
+    margin-bottom: 20px; 
+}
+
+
 
 nav .navbar-nav .nav-item a.registro {
     text-decoration: none; 
@@ -89,7 +94,7 @@ nav .navbar-nav .nav-item a.registro {
 }
 
 .carousel {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 40px auto; 
 }
 
@@ -209,7 +214,42 @@ nav .navbar-nav .nav-item a.registro {
     -webkit-text-stroke: 3px rgb(255, 0, 0);
 }
 
+
+.txttitulohome {
+    color: rgb(255, 0, 0);
+    text-align: center;
+    font-size: 300%;
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 20px 0; 
+    -webkit-text-stroke: 3px rgb(255, 0, 0);
+}
+
+.txttituloregistro {
+    color: rgb(255, 0, 0);
+    text-align: center;
+    font-size: 300%;
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 20px 0; 
+    -webkit-text-stroke: 3px rgb(255, 0, 0);
+}
+
 .txtnav {
+    text-decoration: none; 
+    color: #ff5e00;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    margin-right: 20px;
+    font-weight: 600;
+}
+
+.texto-blanco {
+    color: white;         
+    text-align: justify;   
+    font-size: 0.8em;     
+}
+
+
+.txtcontacto {
     text-decoration: none; 
     color: #ff5e00;
     font-family: Helvetica, Arial, sans-serif;
@@ -402,6 +442,25 @@ h2 {
     border: 2px solid green !important;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.container {
+    flex: 1; 
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto; 
+}
+
+
 .formulario__grupo-incorrecto .form-control__error-txt{
     font-size: 16px;
     color: red;
@@ -418,6 +477,7 @@ h2 {
 .boton-enviar {
     font-size: 25px; 
     padding: 10px 20px; 
+    margin-bottom: 20px;
 }
 
 

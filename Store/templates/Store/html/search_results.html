@@ -43,7 +43,7 @@
           {% if user.is_authenticated %}
           <li class="nav-item">
             <p class="pt-2 nombre-usuario h6" style="margin-right: 20px;">Bienvenido, {{ user.username }}</p>
-            <!-- Ajusta el margen aquí -->
+            
           </li>
           {% else %}
           <!-- Ícono de Usuario -->
@@ -113,10 +113,10 @@
     </form>
 
     {% if productos %}
-    <div class="row txtsub"> <!-- Añadir 'row' para organizar las tarjetas en filas -->
+    <div class="row txtsub"> 
         {% for producto in productos %}
-        <div class="col-sm-6 col-md-4 col-lg-3 mb-4"> <!-- Organiza las tarjetas en columnas -->
-            <div class="card bg-dark text-white storeSpacing"> <!-- Fondo negro y texto blanco -->
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4"> 
+            <div class="card bg-dark text-white storeSpacing"> 
                 <img src="{{ producto.imagen.url }}" alt="{{ producto.nombreProducto }}" class="card-img-top img-fluid" style="height: 250px; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">{{ producto.nombreProducto }}</h5>
@@ -149,6 +149,23 @@
 <a href="{% url 'index' %}" class="boton_volver d-block text-center mt-4">Volver</a>
 <script src="{% static 'Store/js/carrito.js' %}"></script>
 
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h5>Sobre Nosotros</h5>
+          <ul class="list-unstyled">
+            <li><a href="{% url 'quienes_somos' %}" class="text-white">¿Quiénes Somos?</a></li>
+            <li><a href="{% url 'contacto' %}" class="text-white">Contacto</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <p>&copy; {{ current_year }} Empresa. Todos los derechos reservados.</p>
+    </div>
+  </footer>
 
 <form method="post" id="csrf-form">
     {% csrf_token %}

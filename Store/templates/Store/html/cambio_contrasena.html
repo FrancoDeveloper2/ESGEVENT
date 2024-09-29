@@ -43,7 +43,7 @@
           {% if user.is_authenticated %}
           <li class="nav-item">
             <p class="pt-2 nombre-usuario h6" style="margin-right: 20px;">Bienvenido, {{ user.username }}</p>
-            <!-- Ajusta el margen aquí -->
+            
           </li>
           {% else %}
           <!-- Ícono de Usuario -->
@@ -103,32 +103,41 @@
     </div>
   </nav>
 
-<div class="container">
+  <div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="my-5 txtperfil">
                 <h3>Cambio de Contraseña</h3>
                 <hr>
             </div>
+            <!-- Mostrar mensajes de éxito o error -->
+            {% if messages %}
+                <div class="alert-container mb-4">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <!-- Formulario de Cambio de Contraseña -->
-            <form method="post" action="{% url 'cambiar_contrasena' %}">
+            <form method="post" action="{% url 'cambio_contra' %}">
                 {% csrf_token %}
                 <!-- Contenido del formulario de Cambio de Contraseña -->
                 <div class="row mb-5 gx-md-5 ">
                     <div class="col-md-4">
                         <div class="bg-secondary-soft px-4 py-5 pt-4 rounded">
-                       
                             <div class="mb-3">
                                 <label class="form-label label-nombre">Contraseña antigua</label>
-                                <input type="password" class="form-control" name="contrasena_antigua">
+                                <input type="password" class="form-control" name="contrasena_antigua" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label label-nombre">Nueva Contraseña</label>
-                                <input type="password" class="form-control" name="nueva_contrasena">
+                                <input type="password" class="form-control" name="nueva_contrasena" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label label-nombre">Confirme Contraseña</label>
-                                <input type="password" class="form-control" name="verificacion_contrasena">
+                                <input type="password" class="form-control" name="verificacion_contrasena" required>
                             </div>
                         </div>
                     </div>
@@ -138,7 +147,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> 
 </div>
 
 <!-- Modal de Error -->
@@ -160,6 +169,25 @@
         </div>
     </div>
 </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h5>Sobre Nosotros</h5>
+          <ul class="list-unstyled">
+            <li><a href="{% url 'quienes_somos' %}" class="text-white">¿Quiénes Somos?</a></li>
+            <li><a href="{% url 'contacto' %}" class="text-white">Contacto</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <p>&copy; {{ current_year }} Empresa. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
 
 <!-- Scripts y otros elementos al final del cuerpo del HTML -->
 

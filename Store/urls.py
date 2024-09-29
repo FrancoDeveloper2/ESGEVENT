@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import CustomPasswordResetCompleteView, CustomPasswordResetView, agregar_al_carrito, buscar_producto, iniciar_sesion
+from .views import CustomPasswordResetCompleteView, CustomPasswordResetView, agregar_al_carrito, buscar_producto, contacto, enviar_contacto, iniciar_sesion, quienes_somos, ver_producto
 from django.contrib.auth import views as auth_views
 from .models import Usuario
 from django.conf import settings
@@ -28,9 +28,9 @@ urlpatterns = [
 
     path('login/', views.iniciar_sesion, name='iniciar_sesion'),
     path('login/', views.iniciar_sesion, name='login'),
- 
+    path('enviar-contacto/', enviar_contacto, name='enviar_contacto'),
+
     path('cambio_contra/', views.cambio_contra, name='cambio_contra'),
-    path('cambiar_contrasena/', views.cambiar_contrasena, name='cambiar_contrasena'),
     path('carrito/', views.carrito, name='carrito'),
     path('agregar_al_carrito/<int:idProducto>/', agregar_al_carrito, name='agregar_al_carrito'),
     path('realizar_pedido/', views.realizar_pedido, name='realizar_pedido'),
@@ -38,7 +38,9 @@ urlpatterns = [
     path('carrito/vaciar/', views.vaciar_carrito, name='vaciar_carrito'),
     path('carrito/finalizar/', views.finalizar_compra, name='finalizar_compra'),
     path('compra_finalizada/', views.compra_finalizada, name='compra_finalizada'),
- 
+    path('producto/<int:producto_id>/', ver_producto, name='ver_producto'), 
+    path('quienes-somos/', quienes_somos, name='quienes_somos'),
+    path('contacto/', contacto, name='contacto'),
     path('lista/', views.lista, name='lista'),
 ]
 
