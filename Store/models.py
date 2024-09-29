@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.db import models
 from django.utils import timezone
 from decimal import Decimal
+from django.db.models import Count
 
 class UsuarioManager(BaseUserManager):
     def create_user(self, username, email, password=None):
@@ -50,10 +51,16 @@ class Categoria(models.Model):
     idCategoria = models.AutoField(primary_key=True, verbose_name="ID de la categoria")
     nombreCat = models.CharField(max_length=30, verbose_name="Nombre de la categoria", null=False, blank=False)
     imagenCat = models.ImageField(upload_to='categoria', null=True, blank=True)
+    visible_en_carrusel = models.BooleanField(default=False, verbose_name="Visible en carrusel")  # Nuevo campo
+
     class Meta:
         db_table = 'STORE_CATEGORIA'
+
     def __str__(self):
-        return self.nombreCat
+        return str(self.nombreCat) if self.nombreCat else "Sin nombre"
+
+
+
 
 class Logo(models.Model):
     logo = models.ImageField(upload_to='logos/', null=True, blank=True)
@@ -69,6 +76,7 @@ class Background(models.Model):
         return "Fondo de la página"
 
 
+
 class Producto(models.Model):
     idProducto = models.AutoField(primary_key=True, verbose_name="Id del Producto")
     nombreProducto = models.CharField(max_length=50, verbose_name="Nombre del Producto", null=False, blank=False)
@@ -82,16 +90,34 @@ class Producto(models.Model):
         db_table = 'STORE_PRODUCTO'
 
     def __str__(self):
-        return f"{self.nombreProducto} - ${self.precioProducto}"
+        return self.nombreProducto  
 
 
 
-class Venta (models.Model):
-    idVenta = models.AutoField(primary_key=True,verbose_name="Id de venta",null=False, blank=False)
-    fechaVenta = models.DateField(verbose_name="Id de venta",null=False, blank=False)
-    usuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)
+
+class Venta(models.Model):
+    idVenta = models.AutoField(primary_key=True, verbose_name="Id de venta", null=False, blank=False)
+    fechaVenta = models.DateField(auto_now_add=True, verbose_name="Fecha de venta")
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+    imagen_producto = models.ImageField(upload_to='productos', null=True, blank=True)  # Asegúrate de que este campo se utiliza
+
     def __str__(self):
-        return self.fechaVenta    
+        return f"{self.usuario} - {self.producto.nombreProducto} - {self.fechaVenta}"
+
+    @classmethod
+    def obtener_productos_mas_vendidos(cls, limite=5):
+        return cls.objects.values(
+            'producto__idProducto',
+            'producto__nombreProducto',
+            'imagen_producto',  # Obtiene la imagen desde la tabla Venta
+            'precio_unitario'
+        ).annotate(total_vendidos=Count('idVenta')).order_by('-total_vendidos')[:limite]
+
+
 
 
 
@@ -113,5 +139,6 @@ class Carrito(models.Model):
     cantidad = models.PositiveIntegerField(default=0)
     precio_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)  
 
-    def __str__(self):
-        return f"{self.usuario} - {self.producto} - Cantidad: {self.cantidad} - Precio Total: {self.precio_total}"
+    @classmethod
+    def obtener_productos_mas_vendidos(cls, limite=5):
+        return cls.objects.values('producto__idProducto', 'producto__nombreProducto', 'producto__imagen', 'producto__precioProducto').annotate(total_vendidos=Count('producto')).order_by('-total_vendidos')[:limite]

@@ -69,7 +69,7 @@ ROOT_URLCONF = 'ProjectDjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,8 +108,12 @@ DATABASES = {
 }
 AUTH_USER_MODEL = 'Store.Usuario'
 
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
@@ -168,6 +172,22 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_URL = 'cierresesion'
 LOGOUT_REDIRECT_URL = 'login'
+
+# Configuración de correo electrónico
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.office365.com'  
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'francopavez1@outlook.com' 
+EMAIL_HOST_PASSWORD = 'Metlagear1..'  
+
+DEFAULT_FROM_EMAIL = 'francopavez1@outlook.com'
+ADMIN_EMAIL = 'francopavez1@outlook.com'  # Correo del administrador
+
+
+
+
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '928529522046-g86rdqsmuthnkg7qfqsrvd6ctdu0qhl0.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'

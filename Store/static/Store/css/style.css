@@ -1,4 +1,3 @@
-
 .navbar-logo {
     max-height: 50px; 
     max-width: auto;  
@@ -15,19 +14,8 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
-.navbar-logo {
-    max-height: 50px; 
-    max-width: auto;  
-}
 
-
-.card-custom {
-    background-color: black;
-    color: white;
-    }
-
-
-    
+ 
 
     .black-background-table {
         background-color: black ;
@@ -44,14 +32,37 @@ body {
     }
     
 
-
-
-
+    input {
+        height: 30px;
+        font-size: 18px; 
+        width: 200px;
+    }
+    
+    .search-button {
+        height: 30px; 
+        font-size: 10px; 
+    }
+    
+    #search-btn {
+        display: flex; /* Asegura que el ícono y el texto se alineen como flex items */
+        align-items: center; /* Alinea verticalmente el ícono y el texto */
+    }
 
 
 .custom-navbar-bg {
     background-color: rgb(0, 0, 0); 
 }
+
+  
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    /* Cambia las líneas del ícono a blanco */
+    transform: scale(0.8); 
+    width: 1.5rem; 
+    height: 1.5rem; 
+  }
+  
+
 
 .logo{
     display: flex;
@@ -70,10 +81,114 @@ body {
 
 nav .navbar-nav .nav-item a.registro {
     text-decoration: none; 
-    color: #ff5e00;
+    color: #f6f6f6;
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-size: 12px;
+    margin-top: 5px;
     font-weight: 600;
+}
+
+.carousel {
+    max-width: 800px;
+    margin: 40px auto; 
+}
+
+.carousel-caption {
+    position: absolute; 
+    top: 60%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    text-align: center;
+}
+
+.carousel-caption h5 {
+    font-size: 1.5rem; 
+    color: #ffffff; 
+    font-weight: bold; 
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); 
+}
+
+.carousel img {
+    max-height: 200px; 
+    object-fit: cover; 
+    width: 100%; 
+}
+
+@media (max-width: 768px) {
+    .carousel {
+        max-width: 100%; 
+
+    .carousel img {
+        max-height: 120px; 
+    }
+}}
+
+.categoria-card {
+    border-radius: 10px; 
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
+}
+
+.categoria-card:hover {
+    transform: scale(1.05); 
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.categoria-card .card-title {
+    font-size: 1.25rem; 
+    font-weight: bold; 
+    color: #ffffff; 
+    text-align: center; 
+}
+
+
+.categoria-card .btn {
+    width: 100%; 
+    margin-top: 10px; 
+}
+
+
+.categoria-card img {
+    border-top-left-radius: 10px; 
+    border-top-right-radius: 10px;
+    height: 250px; 
+    object-fit: cover;
+}
+
+
+
+.cantidad-input {
+    width: 60px;
+    font-size: 1rem;
+    height: 35px; 
+    padding: 0; 
+}
+
+.btn-outline-secondary {
+    font-size: 1rem;
+    padding: 0; 
+    height: 30px; 
+    line-height: 20px; 
+    width: 30px;
+}
+
+
+
+
+#search-btn {
+
+    
+    font-size: 12px;
+
+}
+
+.buscar-text {
+    text-decoration: none; 
+    color: #fdf9f5;
+    margin-top: 5px; 
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 5px; 
 }
 
 .txt {
@@ -85,7 +200,7 @@ nav .navbar-nav .nav-item a.registro {
     -webkit-text-stroke: 3px rgb(0, 255, 64);
 }
 
-.txtaventura {
+.txttitulo {
     color: rgb(255, 0, 0);
     text-align: center;
     font-size: 400%;
@@ -94,6 +209,14 @@ nav .navbar-nav .nav-item a.registro {
     -webkit-text-stroke: 3px rgb(255, 0, 0);
 }
 
+.txtnav {
+    text-decoration: none; 
+    color: #ff5e00;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    margin-right: 20px;
+    font-weight: 600;
+}
 
 h1 {
     color: rgb(255, 255, 255);
@@ -112,7 +235,7 @@ h1 {
 }
 
 .txtcarrito {
-    color: rgb(255, 255, 255);
+    color: rgb(255, 94, 0);
     text-align: center;
     font-size: 300%;
     font-family: Helvetica, Arial, sans-serif;
@@ -120,32 +243,57 @@ h1 {
    
 }
 
-.txtcarrera {
-    color: rgb(255, 0, 106);
+.txtsub{
+    color: rgb(243, 243, 243);
     text-align: center;
-    font-size: 400%;
+    font-size: 100%;
     font-family: Helvetica, Arial, sans-serif;
     margin: 20px 0; 
-    -webkit-text-stroke: 3px rgb(255, 0, 106);
+   
 }
 
-.txtdeporte {
-    color: rgb(255, 153, 0);
-    text-align: center;
-    font-size: 400%;
-    font-family: Helvetica, Arial, sans-serif;
-    margin: 20px 0; 
-    -webkit-text-stroke: 3px rgb(255, 153, 0);
+
+.nav-link i.fas {
+    vertical-align: middle; 
+    font-size: 1.0em; 
+    margin-right: 5px; 
+    
 }
 
-.txtrol {
-    color: rgb(0, 204, 255);
-    text-align: center;
-    font-size: 400%;
-    font-family: Helvetica, Arial, sans-serif;
-    margin: 20px 0; 
-    -webkit-text-stroke: 3px rgb(0, 204, 255);
+.search-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgb(12, 12, 12);
+    padding: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
+
+.search-popup input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+}
+
+.search-popup button {
+    padding: 8px 16px;
+    background-color: #fa3f10;
+    color: rgb(28, 25, 25);
+    border: none;
+    cursor: pointer;
+}
+
+.search-popup button:hover {
+    background-color: #0f5ca9;
+}
+
+
+
+
+
+
 
 h2 {
     color: rgb(255, 94, 0);
@@ -155,45 +303,10 @@ h2 {
     -webkit-text-stroke: 3px rgb(255, 94, 0);
 }
 
-.color {
-    color: rgb(255, 255, 255);
-    font-size: 35px;
-    font-family: Arial, sans-serif;
-    text-align: center; 
-    margin: 20px 0; 
-    -webkit-text-stroke: 2px rgb(255, 255, 255);
-}
+
 
 .centrado {
     text-align: center;
-}
-
-
-.admin-panel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.info-box {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 10px;
-    text-align: center;
-}
-
-.info-box h2 {
-    color: #333;
-    font-size: 24px;
-}
-
-.info-box p {
-    color: #666;
-    font-size: 16px;
-    margin: 10px 0;
 }
 
 
@@ -251,10 +364,6 @@ h2 {
     margin-right: 30px;
 }
 
-img{
-    width: auto;
-    height: 250px;
-}
 
 .storetxt {
     color: rgb(255, 255, 255);

@@ -17,9 +17,9 @@ class ventas(admin.ModelAdmin):
 
 @admin.register(Categoria)
 class CategoriaAdmin(admin.ModelAdmin):
-    list_display = ('idCategoria', 'nombreCat', 'imagenCat')
+    list_display = ('idCategoria', 'nombreCat', 'imagenCat', 'visible_en_carrusel')  
     search_fields = ('nombreCat',)
-    list_filter = ('nombreCat',)
+    list_filter = ('nombreCat', 'visible_en_carrusel')  
 
 
 admin.site.register(Logo)
@@ -27,3 +27,4 @@ admin.site.register(Logo)
 @admin.register(Background)
 class BackgroundAdmin(admin.ModelAdmin):
     pass
+

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Cargo static de py -->
+{% load static %}
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'Store/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'Store/css/style_usuario.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body {% if background %}
+  style="background-image: url('{{ background.background_image.url }}'); background-size: cover;" {% else %}
+  style="background-color: #ffffff;" {% endif %}>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light custom-navbar-bg">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'index' %}">
+        {% if site_settings and site_settings.logo %}
+        <img src="{{ site_settings.logo.url }}" alt="Logo" class="logo navbar-logo">
+        {% else %}
+        <h3 class="logo">Store</h3>
+        {% endif %}
+      </a>
+
+      <a class="txtnav" href="{% url 'index' %}">Home</a>
+      <a class="txtnav" href="{% url 'categorias' %}">Categorias</a>
+
+
+      <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Contenido del menú -->
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto d-flex align-items-center">
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <p class="pt-2 nombre-usuario h6" style="margin-right: 20px;">Bienvenido, {{ user.username }}</p>
+            <!-- Ajusta el margen aquí -->
+          </li>
+          {% else %}
+          <!-- Ícono de Usuario -->
+          <li class="nav-item">
+            <a class="nav-link registro d-flex align-items-center" href="{% url 'login' %}">
+              <i class="fas fa-user" style="color: orange;"></i>
+              Iniciar sesión
+            </a>
+          </li>
+
+          {% endif %}
+          <!-- Botón de búsqueda con ventana emergente -->
+          <li class="nav-item d-flex align-items-center">
+            <button class="btn p-0" id="search-btn" style="background: none; border: none;">
+              <i class="fas fa-search" style="color: orange;"></i>
+              <span class="buscar-text">Buscar</span>
+            </button>
+          </li>
+
+          <!-- Ícono de Carrito -->
+          <li class="nav-item">
+            <a class="nav-link registro d-flex align-items-center" href="{% url 'carrito' %}">
+              <i class="fas fa-shopping-cart" style="color: orange;"></i>
+              Carrito
+            </a>
+          </li>
+
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link registro" href="{% url 'editarperfil' %}">
+              <i class="fas fa-user-edit" style="color: orange;"></i> Editar Perfil
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link registro" href="{% url 'cambio_contra' %}">
+              <i class="fas fa-lock" style="color: orange;"></i> Cambio de Contraseña
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link registro" href="{% url 'cierresesion' %}" id="logout-link">
+              <i class="fas fa-sign-out-alt" style="color: orange;"></i> Cerrar sesión
+            </a>
+          </li>
+          {% endif %}
+
+        </ul>
+      </div>
+    </div>
+
+    <!-- Ventana emergente de búsqueda -->
+    <div id="search-popup" class="search-popup" style="display: none;">
+      <form method="GET" action="{% url 'buscar_producto' %}">
+        <input type="text" name="query" placeholder="Buscar productos...">
+        <button type="submit">Buscar</button>
+      </form>
+    </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+
+    <form method="GET" action="{% url 'buscar_producto' %}" class="txtsub">
+        <div class="input-group mb-3">
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary search-button">Buscar</button>
+        </div>
+    </form>
+
+    {% if productos %}
+    <div class="row txtsub"> <!-- Añadir 'row' para organizar las tarjetas en filas -->
+        {% for producto in productos %}
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4"> <!-- Organiza las tarjetas en columnas -->
+            <div class="card bg-dark text-white storeSpacing"> <!-- Fondo negro y texto blanco -->
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombreProducto }}" class="card-img-top img-fluid" style="height: 250px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ producto.nombreProducto }}</h5>
+                    <p class="card-text">{{ producto.descripcionProducto }}</p>
+                    <p class="card-text">Precio: ${{ producto.precioProducto }}</p>
+                    <p class="card-text">Stock disponible: {{ producto.stockProd }}</p>
+
+                    <!-- Formulario para agregar al carrito -->
+                    <form method="post" action="{% url 'agregar_al_carrito' producto.idProducto %}">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <button class="btn btn-outline-secondary" type="button" id="restarCantidad">-</button>
+                            <input type="text" class="form-control text-center" name="cantidad" value="1" readonly>
+                            <button class="btn btn-outline-secondary" type="button" id="sumarCantidad">+</button>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Agregar al carrito</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No se encontraron productos.</p>
+    {% endif %}
+</div>
+
+
+    
+<a href="{% url 'index' %}" class="boton_volver d-block text-center mt-4">Volver</a>
+<script src="{% static 'Store/js/carrito.js' %}"></script>
+
+
+<form method="post" id="csrf-form">
+    {% csrf_token %}
+</form>
+</body>
+
+</html>
+
+</div>
+<a href="{% url 'index' %}" class="boton_volver d-block text-center mt-4">Volver</a>
+
+
+    <!-- Ventana emergente de búsqueda -->
+    <div id="search-popup" class="search-popup" style="display: none;">
+        <form method="GET" action="{% url 'buscar_producto' %}">
+          <input type="text" name="query" placeholder="Buscar productos...">
+          <button type="submit">Buscar</button>
+        </form>
+      </div>
+      </div>
+    </nav>
+  
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  
+  
+  
+    <!-- JavaScript para mostrar y ocultar la ventana emergente -->
+    <script>
+      document.getElementById('search-btn').addEventListener('click', function () {
+        var popup = document.getElementById('search-popup');
+        if (popup.style.display === 'none') {
+          popup.style.display = 'block';
+        } else {
+          popup.style.display = 'none';
+        }
+      });
+  
+      // Cerrar la ventana emergente si se hace clic fuera de ella
+      window.addEventListener('click', function (e) {
+        var popup = document.getElementById('search-popup');
+        var searchBtn = document.getElementById('search-btn');
+  
+        if (!popup.contains(e.target) && e.target !== searchBtn && !searchBtn.contains(e.target)) {
+          popup.style.display = 'none';
+        }
+      });
+    </script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+crossorigin="anonymous"></script>
+
+<!-- Modal para mostrar mensajes -->
+{% if messages %}
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">Mensaje</h5>
+            </div>
+            <div class="modal-body">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var messageModal = new bootstrap.Modal(document.getElementById('messageModal'), {});
+    messageModal.show();
+
+</script>
+
+{% endif %}
+</body>
+
+</html>
